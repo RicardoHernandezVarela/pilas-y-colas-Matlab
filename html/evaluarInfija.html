@@ -1,0 +1,188 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>evaluarInfija</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-11-19"><meta name="DC.source" content="evaluarInfija.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [infija, resultado] = evaluarInfija(inst_uno, tam1, tam2)
+<span class="comment">%Ricardo Hern&aacute;ndez Varela.</span>
+<span class="comment">%Ciencias Y Tecnolog&iacute;as Biom&eacute;dicas.</span>
+<span class="comment">%Funci&oacute;n para convertir expresiones en notaci&oacute;n posfija a notaci&oacute;n infija y</span>
+<span class="comment">%evaluar las operaciones para calcular elresultado.</span>
+
+separado = split(string(inst_uno)); <span class="comment">%Separaci&oacute;n de los caracteres dentro de la cadena.</span>
+operadores = <span class="string">'%/*-+'</span>; <span class="comment">%Car&aacute;cteres para realizar las operaciones con los elementod de la pila.</span>
+infija = <span class="string">""</span>; <span class="comment">%Variabe en la que se almacenan la expresi&oacute;n en notaci&oacute;n infija.</span>
+pila = stack(tam1); <span class="comment">%Creaci&oacute;n del primer objeto tipo pila.</span>
+pila2 = stack(tam2); <span class="comment">%Creaci&oacute;n del segundo objeto tipo pila.</span>
+
+<span class="comment">%Ciclo for para recorrer la pila que se utilizapara evaluar la expresi&oacute;n.</span>
+<span class="keyword">for</span> i=1:length(separado)
+    valor = separado(i); <span class="comment">%En una variable se almacena el car&aacute;cter actual.</span>
+    <span class="keyword">switch</span> valor <span class="comment">%Con un switch se verifica si el car&aacute;cter es un operador.</span>
+        <span class="keyword">case</span> <span class="string">'-'</span>
+            [n1, pila] = pop(pila); <span class="comment">%Si es un operaor de resta se sacan los dos &uacute;ltimos elementos y se restan.</span>
+            [n2, pila] = pop(pila);
+            resultado = n2-n1;
+            pila = push(pila, resultado); <span class="comment">%El resultado se inserta en la pila.</span>
+        <span class="keyword">case</span> <span class="string">'*'</span>
+            [n1, pila] = pop(pila); <span class="comment">%Si es un operaor de multiplicaci&oacute;n se sacan los dos &uacute;ltimos elementos y se multiplican.</span>
+            [n2, pila] = pop(pila);
+            resultado = n2*n1;
+            pila = push(pila, resultado); <span class="comment">%El resultado se inserta en la pila.</span>
+        <span class="keyword">case</span> <span class="string">'+'</span>
+            [n1, pila] = pop(pila); <span class="comment">%Si es un operaor de suma se sacan los dos &uacute;ltimos elementos y se suman.</span>
+            [n2, pila] = pop(pila);
+            resultado = n2+n1;
+            pila = push(pila, resultado); <span class="comment">%El resultado se inserta en la pila.</span>
+        <span class="keyword">case</span> <span class="string">'/'</span>
+            [n1, pila] = pop(pila); <span class="comment">%Si es un operaor de divisi&oacute;n se sacan los dos &uacute;ltimos elementos y se dividen.</span>
+            [n2, pila] = pop(pila);
+            resultado = n2/n1;
+            pila = push(pila, resultado); <span class="comment">%El resultado se inserta en la pila.</span>
+        <span class="keyword">case</span> <span class="string">'%'</span>
+            [n1, pila] = pop(pila);  <span class="comment">%Si es un operaor de m&oacute;dulo se sacan los dos &uacute;ltimos elementos y se calcula el m&oacute;dulo.</span>
+            [n2, pila] = pop(pila);
+            resultado = mod(n2,n1);
+            pila = push(pila, resultado); <span class="comment">%El resultado se inserta en la pila.</span>
+        <span class="keyword">otherwise</span>
+           pila = push(pila, str2double(valor)); <span class="comment">%Si el car&aacute;cter es un n&uacute;mero se inserta en la pila.</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> contains(operadores, valor) <span class="comment">%Con un condicional if se verifica si el car&aacute;cter es un operador.</span>
+        [n1, pila2] = pop(pila2); <span class="comment">%Si lo es, se sacan los dos &uacute;ltimos elementos de la segunda pila.</span>
+        [n2, pila2] = pop(pila2);
+        infija = <span class="string">'('</span> + n2 + valor + n1 + <span class="string">')'</span>; <span class="comment">%Se construye una cadena con los n&uacute;meros y el operador correspondiente.</span>
+        pila2 = push(pila2, infija); <span class="comment">%Se introduce en la pila el resultado de concatenar la cadena.</span>
+    <span class="keyword">else</span>
+        pila2 = push(pila2, valor); <span class="comment">%Si el car&aacute;cter es un n&uacute;mero se inserta en la pila.</span>
+    <span class="keyword">end</span>
+
+resultado = pila.top.id; <span class="comment">%El resultado de evaluar la operaci&oacute;n se retorna.</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput error">Not enough input arguments.
+
+Error in evaluarInfija (line 7)
+separado = split(string(inst_uno)); %Separaci&oacute;n de los caracteres dentro de la cadena.
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [infija, resultado] = evaluarInfija(inst_uno, tam1, tam2)
+%Ricardo Hernández Varela.
+%Ciencias Y Tecnologías Biomédicas.
+%Función para convertir expresiones en notación posfija a notación infija y
+%evaluar las operaciones para calcular elresultado.
+
+separado = split(string(inst_uno)); %Separación de los caracteres dentro de la cadena.
+operadores = '%/*-+'; %Carácteres para realizar las operaciones con los elementod de la pila.
+infija = ""; %Variabe en la que se almacenan la expresión en notación infija.
+pila = stack(tam1); %Creación del primer objeto tipo pila.
+pila2 = stack(tam2); %Creación del segundo objeto tipo pila.
+
+%Ciclo for para recorrer la pila que se utilizapara evaluar la expresión.
+for i=1:length(separado)
+    valor = separado(i); %En una variable se almacena el carácter actual.
+    switch valor %Con un switch se verifica si el carácter es un operador.
+        case '-'
+            [n1, pila] = pop(pila); %Si es un operaor de resta se sacan los dos últimos elementos y se restan.
+            [n2, pila] = pop(pila);
+            resultado = n2-n1;
+            pila = push(pila, resultado); %El resultado se inserta en la pila.
+        case '*' 
+            [n1, pila] = pop(pila); %Si es un operaor de multiplicación se sacan los dos últimos elementos y se multiplican.
+            [n2, pila] = pop(pila);
+            resultado = n2*n1;
+            pila = push(pila, resultado); %El resultado se inserta en la pila.
+        case '+'
+            [n1, pila] = pop(pila); %Si es un operaor de suma se sacan los dos últimos elementos y se suman.
+            [n2, pila] = pop(pila);
+            resultado = n2+n1;
+            pila = push(pila, resultado); %El resultado se inserta en la pila.
+        case '/'  
+            [n1, pila] = pop(pila); %Si es un operaor de división se sacan los dos últimos elementos y se dividen.
+            [n2, pila] = pop(pila);
+            resultado = n2/n1;
+            pila = push(pila, resultado); %El resultado se inserta en la pila.
+        case '%' 
+            [n1, pila] = pop(pila);  %Si es un operaor de módulo se sacan los dos últimos elementos y se calcula el módulo.
+            [n2, pila] = pop(pila);
+            resultado = mod(n2,n1);
+            pila = push(pila, resultado); %El resultado se inserta en la pila.
+        otherwise
+           pila = push(pila, str2double(valor)); %Si el carácter es un número se inserta en la pila.
+    end
+    
+    if contains(operadores, valor) %Con un condicional if se verifica si el carácter es un operador.
+        [n1, pila2] = pop(pila2); %Si lo es, se sacan los dos últimos elementos de la segunda pila.
+        [n2, pila2] = pop(pila2);
+        infija = '(' + n2 + valor + n1 + ')'; %Se construye una cadena con los números y el operador correspondiente.
+        pila2 = push(pila2, infija); %Se introduce en la pila el resultado de concatenar la cadena.
+    else
+        pila2 = push(pila2, valor); %Si el carácter es un número se inserta en la pila.
+    end
+
+resultado = pila.top.id; %El resultado de evaluar la operación se retorna.
+end
+##### SOURCE END #####
+--></body></html>
