@@ -24,6 +24,6 @@ exp_tres = '30 7 % 8 + 2 /';
 fprintf('La notación infija de la expresión "%s" es %s\r\n y el resultado es: %0.2f\r\n', exp_tres, infija, resultado);
 
 %Expresión en notación posfija.
-exp_tres = '30 7 8 2 % + /';
-[infija, resultado] = evaluarInfija(exp_tres, 20, 20);
-fprintf('La notación infija de la expresión "%s" es %s\r\n y el resultado es: %0.2f\r\n', exp_tres, infija, resultado);
+exp_cuatro = '30 7 8 2 % + /';
+[infija, resultado] = evaluarInfija(exp_cuatro, 20, 20);
+fprintf('La notación infija de la expresión "%s" es %s\r\n y el resultado es: %0.2f\r\n', exp_cuatro, infija, resultado);
