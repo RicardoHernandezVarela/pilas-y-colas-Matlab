@@ -1,4 +1,4 @@
-function [infijas, resultado] = evaluarInfija(inst_uno, tam1, tam2)
+function [infija, resultado] = evaluarInfija(inst_uno, tam1, tam2)
 %Ricardo Hernández Varela.
 %Ciencias Y Tecnologías Biomédicas.
 %Función para convertir expresiones en notación posfija a notación infija y
